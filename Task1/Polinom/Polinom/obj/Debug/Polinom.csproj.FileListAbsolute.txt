@@ -1,0 +1,6 @@
+C:\Users\Александра\Desktop\epam\Polinom\Polinom\bin\Debug\Polinom.exe.config
+C:\Users\Александра\Desktop\epam\Polinom\Polinom\bin\Debug\Polinom.exe
+C:\Users\Александра\Desktop\epam\Polinom\Polinom\bin\Debug\Polinom.pdb
+C:\Users\Александра\Desktop\epam\Polinom\Polinom\obj\Debug\Polinom.csprojAssemblyReference.cache
+C:\Users\Александра\Desktop\epam\Polinom\Polinom\obj\Debug\Polinom.exe
+C:\Users\Александра\Desktop\epam\Polinom\Polinom\obj\Debug\Polinom.pdb

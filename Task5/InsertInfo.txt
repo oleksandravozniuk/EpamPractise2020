@@ -1,0 +1,44 @@
+INSERT INTO Category
+VALUES ('House')
+INSERT INTO Category
+VALUES ('Mobile')
+INSERT INTO Category
+VALUES ('Forest')
+INSERT INTO Category
+VALUES ('Books')
+INSERT INTO Category
+VALUES ('Shoes')
+INSERT INTO Category
+VALUES ('Sport')
+
+INSERT INTO Supplier
+VALUES ('BigMarket')
+INSERT INTO Supplier
+VALUES ('DreamHouse')
+INSERT INTO Supplier
+VALUES ('ProdHub')
+INSERT INTO Supplier
+VALUES ('Fast')
+INSERT INTO Supplier
+VALUES ('Easy')
+
+INSERT INTO Product
+VALUES ('P1',1,1)
+INSERT INTO Product
+VALUES ('P2',1,2)
+INSERT INTO Product
+VALUES ('P3',2,1)
+INSERT INTO Product
+VALUES ('A9',3,3)
+INSERT INTO Product
+VALUES ('A10',4,2)
+INSERT INTO Product
+VALUES ('C3',5,3)
+INSERT INTO Product
+VALUES ('C5',6,5)
+INSERT INTO Product
+VALUES ('D1',1,5)
+INSERT INTO Product
+VALUES ('D4',2,3)
+INSERT INTO Product
+VALUES ('E5',3,2)

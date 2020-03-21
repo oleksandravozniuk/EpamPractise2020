@@ -1,0 +1,6 @@
+C:\Users\Александра\Desktop\epam\Matrix\Matrix\bin\Debug\Matrix.exe.config
+C:\Users\Александра\Desktop\epam\Matrix\Matrix\bin\Debug\Matrix.exe
+C:\Users\Александра\Desktop\epam\Matrix\Matrix\bin\Debug\Matrix.pdb
+C:\Users\Александра\Desktop\epam\Matrix\Matrix\obj\Debug\Matrix.csprojAssemblyReference.cache
+C:\Users\Александра\Desktop\epam\Matrix\Matrix\obj\Debug\Matrix.exe
+C:\Users\Александра\Desktop\epam\Matrix\Matrix\obj\Debug\Matrix.pdb

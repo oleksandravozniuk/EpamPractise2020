@@ -1,0 +1,16 @@
+C:\Users\Александра\Desktop\epam\Task2\BinaryTreeAndArray\BinaryTree\obj\Debug\netstandard2.0\BinaryTree.csprojAssemblyReference.cache
+C:\Users\Александра\Desktop\epam\Task2\BinaryTreeAndArray\BinaryTree\obj\Debug\netstandard2.0\BinaryTree.AssemblyInfoInputs.cache
+C:\Users\Александра\Desktop\epam\Task2\BinaryTreeAndArray\BinaryTree\obj\Debug\netstandard2.0\BinaryTree.AssemblyInfo.cs
+C:\Users\Александра\Desktop\epam\Task2\BinaryTreeAndArray\BinaryTree\bin\Debug\netstandard2.0\BinaryTree.deps.json
+C:\Users\Александра\Desktop\epam\Task2\BinaryTreeAndArray\BinaryTree\bin\Debug\netstandard2.0\BinaryTree.dll
+C:\Users\Александра\Desktop\epam\Task2\BinaryTreeAndArray\BinaryTree\bin\Debug\netstandard2.0\BinaryTree.pdb
+C:\Users\Александра\Desktop\epam\Task2\BinaryTreeAndArray\BinaryTree\obj\Debug\netstandard2.0\BinaryTree.dll
+C:\Users\Александра\Desktop\epam\Task2\BinaryTreeAndArray\BinaryTree\obj\Debug\netstandard2.0\BinaryTree.pdb
+C:\Users\Oleksandra\Desktop\epam\Task2_tests\BinaryTreeAndArray\BinaryTree\bin\Debug\netstandard2.0\BinaryTree.deps.json
+C:\Users\Oleksandra\Desktop\epam\Task2_tests\BinaryTreeAndArray\BinaryTree\bin\Debug\netstandard2.0\BinaryTree.dll
+C:\Users\Oleksandra\Desktop\epam\Task2_tests\BinaryTreeAndArray\BinaryTree\bin\Debug\netstandard2.0\BinaryTree.pdb
+C:\Users\Oleksandra\Desktop\epam\Task2_tests\BinaryTreeAndArray\BinaryTree\obj\Debug\netstandard2.0\BinaryTree.csprojAssemblyReference.cache
+C:\Users\Oleksandra\Desktop\epam\Task2_tests\BinaryTreeAndArray\BinaryTree\obj\Debug\netstandard2.0\BinaryTree.AssemblyInfoInputs.cache
+C:\Users\Oleksandra\Desktop\epam\Task2_tests\BinaryTreeAndArray\BinaryTree\obj\Debug\netstandard2.0\BinaryTree.AssemblyInfo.cs
+C:\Users\Oleksandra\Desktop\epam\Task2_tests\BinaryTreeAndArray\BinaryTree\obj\Debug\netstandard2.0\BinaryTree.dll
+C:\Users\Oleksandra\Desktop\epam\Task2_tests\BinaryTreeAndArray\BinaryTree\obj\Debug\netstandard2.0\BinaryTree.pdb

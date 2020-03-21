@@ -1,0 +1,104 @@
+use Epam4;
+
+--1 Получить список всех должностей компании с количеством сотрудников на каждой из них
+with Numbers as(
+	select Position, count(*) as Num 
+	from EmployeeTask
+	group by Position )
+select PositionId, PositionName, Num from Position inner join Numbers on PositionId = Position;
+
+
+--2 Определить список должностей компании, на которых нет сотрудников
+with Exception as
+(select PositionId from Position except select Position from EmployeeTask)
+select p.PositionName from Position p right join Exception ex on p.PositionId=ex.PositionId;
+
+--3 Получить список проектов с указанием, сколько сотрудников каждой должности работает на проекте
+select Project.ProjectName,Task.TaskName, EmployeeTask.Position, EmployeeTask.Employee, count(EmployeeTask.Position) as num from Project 
+left join Task on Project.ProjectId=Task.Project
+left join EmployeeTask on Task.TaskId = EmployeeTask.Task
+group by Position, ProjectName, TaskName, Employee
+order by ProjectName;
+
+--4 Посчитать на каждом проекте, какое в среднем количество задач приходится на каждого сотрудника
+select Task.Project, cast(count(Task.TaskId) as float)/cast(count(EmployeeTask.Employee) as float) as Average from EmployeeTask
+full join Task on EmployeeTask.Task = Task.TaskId group by Task.Project ;
+
+--5 Подсчитать длительность выполнения каждого проекта
+--if (select DateClosing over(partition by ProjectId order by ProjectName) from Project) is not null
+--select DATEDIFF(day, DateCreation, DateClosing) AS DaysCount from Project
+--else
+--select DATEDIFF(day, DateCreation, getdate()) as DaysCount from Project
+
+--6 Определить сотрудников с минимальным количеством незакрытых задач
+with OpenedTasks as
+	(select EmployeeTask.Employee as Employee, count(Task.TaskStatus) as Counts from EmployeeTask
+	join Task on EmployeeTask.Task=Task.TaskId
+	where Task.TaskStatus in(select StatusId from TaskStatus where StatusName != 'Closed')
+	group by EmployeeTask.Employee),
+	minNum as (select min(Counts) as minValue from OpenedTasks)
+	select ot.Employee,ot.Counts from OpenedTasks ot
+	inner join minNum on ot.Counts=minNum.minValue;
+
+--7 Определить сотрудников с максимальным количеством незакрытых задач, дедлайн которых уже истек
+with OpenedTasks as
+	(select EmployeeTask.Employee as Employee, count(Task.TaskStatus) as counts, Task.Deadline as Deadline from EmployeeTask
+	join Task on EmployeeTask.Task=Task.TaskId
+	where Task.TaskStatus in(select StatusId from TaskStatus where StatusName != 'Closed') and Deadline<'2020/03/14'
+	group by EmployeeTask.Employee, Task.Deadline),
+	maxNum as (select max(Counts) as maxValue from OpenedTasks)
+	select ot.Employee,ot.Counts, ot.Deadline from OpenedTasks ot
+	inner join maxNum on ot.Counts=maxNum.maxValue;
+
+--8 Продлить дедлайн незакрытых задач на 5 дней
+--Update Task
+--set Deadline = DATEADD(day,5,Deadline)
+--where TaskStatus in (select StatusId from TaskStatus where StatusName != 'Closed');
+
+--9 Посчитать на каждом проекте количество задач, к которым еще не приступили
+select distinct project, count(*) over (partition by Project order by Project) from Task where TaskId not in 
+(select Task from EmployeeTask);
+
+--10 Перевести проекты в состояние закрыт, для которых все задачи закрыты и задать время закрытия временем закрытия задачи проекта, принятой последней
+with CountAllTasks as(
+select distinct Task.Project as Project, count(*) over (partition by Project order by Project) as AllCount from Task),
+CountClosedTasks as(
+select distinct Task.Project as Project, count(*) over (partition by Project order by Project) as ClosedCount from Task where Task.TaskStatus in 
+(select StatusId from TaskStatus where StatusName='Closed')),
+Result as(
+select cct.ClosedCount as Closed,cat.AllCount as AllCount, cct.Project as Project from CountClosedTasks cct
+left join CountAllTasks cat on cct.Project=cat.Project
+ group by cct.Project, cct.ClosedCount, cat.AllCount),
+ Diff as (
+ select Result.AllCount-Result.Closed as Diff, Result.Project as Project from Result),
+ ClosedProject as (
+ select p.ProjectId as Project from Project p 
+ left join Diff d on p.ProjectId=d.Project where d.Diff=0 ),
+ NotClosedProject as (
+ select p.ProjectId as Project from Project p where ProjectId not in (select Project from ClosedProject)),
+LastTaskTime as(
+select top 1 max(Deadline) over (partition by Project order by Project) as Deadline from Task)
+select * from LastTaskTime 
+
+
+--11 Выяснить по всем проектам, какие сотрудники на проекте не имеют незакрытых задач
+select Employee.EmloyeeName from Employee where EmployeeId not in
+(select distinct EmployeeId from Employee
+left join EmployeeTask on Employee.EmployeeId=EmployeeTask.Employee
+left join Task on EmployeeTask.Task=Task.TaskId
+where Task.TaskStatus not in (select StatusId from TaskStatus where StatusName='CLosed'));
+
+--12 Заданную задачу (по названию) проекта перевести на сотрудника с минимальным количеством выполняемых им задач
+with OpenedTasks as
+	(select EmployeeTask.Employee as Employee, count(Task.TaskStatus) as Counts from EmployeeTask
+	join Task on EmployeeTask.Task=Task.TaskId
+	where Task.TaskStatus in(select StatusId from TaskStatus where StatusName != 'Closed') and Project=1
+	group by EmployeeTask.Employee),
+	minNum as (select min(Counts) as minValue from OpenedTasks)
+
+	declare @ex id =
+	(select top 1 ot.Employee,ot.Counts from OpenedTasks ot
+	inner join minNum on ot.Counts=minNum.minValue);
+
+	delete EmployeeTask where Task=5;
+	insert into EmployeeTask values (id,5,1);

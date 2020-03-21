@@ -1,0 +1,58 @@
+GO
+--drop table Employee;
+create table Employee (
+	EmployeeId int primary key identity(1,1),
+	EmloyeeName nvarchar(50) NOT NULL);
+
+GO
+--drop table Project;
+create table Project (
+	ProjectId int primary key identity(1,1),
+	ProjectName nvarchar(50) NOT NULL,
+	DateCreation date NOT NULL,
+	ProjectStatus bit NOT NULL,
+	DateClosing date );
+
+GO
+--drop table Positions;
+create table Position (
+	PositionId int primary key identity(1,1),
+	PositionName nvarchar(30) NOT NULL );
+
+GO
+--drop table TaskStatus;
+create table TaskStatus (
+	StatusId int primary key identity(1,1),
+	StatusName nvarchar(20) NOT NULL );
+	
+
+
+GO
+--drop table Task;
+create table Task (
+	TaskId int primary key identity(1,1),
+	TaskName nvarchar(150) NOT NULL,
+	Deadline date NOT NULL,
+	StatusUpdateDate date NOT NULL,
+	StatusAssigner int NOT NULL,
+	TaskStatus int NOT NULL,
+	Project int NOT NULL,
+
+	foreign key (Project) references Project(ProjectId),
+	foreign key (TaskStatus) references TaskStatus(StatusId),
+	foreign key (StatusAssigner) references Employee(EmployeeId),
+	)
+
+		
+
+GO
+--drop table EmployeeTask;
+create table EmployeeTask (
+	Id int primary key identity(1,1),
+	Employee int NOT NULL,
+	Task int NOT NULL,
+	Position int NOT NULL,
+	foreign key (Employee) references Employee(EmployeeId),
+	foreign key (Task) references Task(TaskId),
+	foreign key (Position) references Position(PositionId)
+	);
