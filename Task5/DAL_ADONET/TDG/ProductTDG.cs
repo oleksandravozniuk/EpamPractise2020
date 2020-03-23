@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DAL_ADONET.TDG
 {
-    class ProductTDG:IProductTDG
+    public class ProductTDG:IProductTDG
     {
         private SqlConnection connection;
 
@@ -22,9 +22,9 @@ namespace DAL_ADONET.TDG
             var res = command.ExecuteNonQuery();
         }
 
-        public void Delete(Product value)
+        public void Delete(int value)
         {
-            var command = new SqlCommand($"Delete Products Where ProductId = '{value.ProductId}'", connection);
+            var command = new SqlCommand($"Delete Products Where ProductId = '{value}'", connection);
             command.ExecuteNonQuery();
         }
 
@@ -57,7 +57,7 @@ namespace DAL_ADONET.TDG
             return products;
         }
 
-        public Product GetById(Guid id)
+        public Product GetById(int id)
         {
             connection.Open();
             SqlCommand command = new SqlCommand($"Select TOP(1) * from Products left join Suppliers on Products.SupplierId = Suppliers.SupplierId left join Categories on Products.CategoryId = Categories.CategoryId where ProductId = '{id.ToString()}'", connection);

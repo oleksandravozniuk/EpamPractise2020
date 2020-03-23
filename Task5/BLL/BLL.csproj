@@ -5,8 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Interfaces\" />
+    <None Remove="Infrastructure\ServiceModule.cs~RF31b21ca8.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DAL_ADONET\DAL_ADONET.csproj" />
   </ItemGroup>
 
 </Project>

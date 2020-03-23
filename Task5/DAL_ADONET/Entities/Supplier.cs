@@ -9,6 +9,7 @@ namespace DAL_ADONET.Entities
     {
         [Key]
         public int SupplierId { get; set; }
+
         [Required]
         [MaxLength(20)]
         public string SupplierName { get; set; }

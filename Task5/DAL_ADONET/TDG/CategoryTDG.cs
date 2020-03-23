@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DAL_ADONET.TDG
 {
-    class CategoryTDG:ICategoryTDG
+    public class CategoryTDG:ICategoryTDG
     {
         private SqlConnection connection;
 
@@ -23,9 +23,9 @@ namespace DAL_ADONET.TDG
             command.ExecuteNonQuery();
         }
 
-        public void Delete(Category value)
+        public void Delete(int value)
         {
-            var command = new SqlCommand($"Delete Categories Where CategoryId = '{value.CategoryId}'", connection);
+            var command = new SqlCommand($"Delete Categories Where CategoryId = '{value}'", connection);
             command.ExecuteNonQuery();
         }
 
@@ -50,7 +50,7 @@ namespace DAL_ADONET.TDG
             return categories;
         }
 
-        public Category GetById(Guid id)
+        public Category GetById(int id)
         {
             SqlCommand command = new SqlCommand($"Select * from Categories where CategoryId = '{id.ToString()}'", connection);
             SqlDataReader reader = command.ExecuteReader();

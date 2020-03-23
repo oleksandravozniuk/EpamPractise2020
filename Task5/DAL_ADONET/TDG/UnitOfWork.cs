@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DAL_ADONET.TDG
 {
-    class UnitOfWork
+    public class UnitOfWork
     {
         private SqlConnection connection;
         private IProductTDG product;
@@ -51,6 +51,14 @@ namespace DAL_ADONET.TDG
                 }
                 return category;
             }
+        }
+
+       
+
+        public void Dispose(bool v)
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void Save()

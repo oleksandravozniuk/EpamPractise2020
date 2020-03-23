@@ -12,9 +12,11 @@ namespace DAL_ADONET.Entities
         [Required]
         [MaxLength(20)]
         public string ProductName { get; set; }
+
         [Required]
         [MaxLength(20)]
         public Supplier Supplier { get; set; }
+
         [Required]
         [MaxLength(20)]
         public Category Category { get; set; }

@@ -8,9 +8,9 @@ namespace DAL_ADONET.Interfaces
     {
         void Add(T value);
         void Update(T value);
-        void Delete(T value);
+        void Delete(int value);
         IEnumerable<T> GetAll();
-        T GetById(Guid id);
+        T GetById(int id);
 
     }
 }

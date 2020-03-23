@@ -6,5 +6,11 @@ namespace BLL.DTOs
 {
     class ProductDTO
     {
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+
+        public SupplierDTO Supplier { get; set; }
+
+        public CategoryDTO Category { get; set; }
     }
 }

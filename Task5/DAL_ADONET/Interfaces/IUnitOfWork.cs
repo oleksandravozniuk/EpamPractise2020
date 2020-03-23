@@ -11,5 +11,6 @@ namespace DAL_ADONET.Interfaces
         ICategoryTDG Category { get; }
 
         void Save();
+        void Dispose();
     }
 }

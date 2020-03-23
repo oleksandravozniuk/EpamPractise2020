@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DAL_ADONET.TDG
 {
-    class SupplierTDG:ISupplierTDG  
+    public class SupplierTDG:ISupplierTDG  
     {
         private SqlConnection connection;
 
@@ -23,9 +23,9 @@ namespace DAL_ADONET.TDG
             command.ExecuteNonQuery();
         }
 
-        public void Delete(Supplier value)
+        public void Delete(int value)
         {
-            var command = new SqlCommand($"Delete Suppliers Where SupplierId = '{value.SupplierId}'", connection);
+            var command = new SqlCommand($"Delete Suppliers Where SupplierId = '{value}'", connection);
             command.ExecuteNonQuery();
         }
 
@@ -50,7 +50,7 @@ namespace DAL_ADONET.TDG
             return suppliers;
         }
 
-        public Supplier GetById(Guid id)
+        public Supplier GetById(int id)
         {
             SqlCommand command = new SqlCommand($"Select * from Suppliers where SupplierId = '{id.ToString()}'", connection);
             SqlDataReader reader = command.ExecuteReader();
