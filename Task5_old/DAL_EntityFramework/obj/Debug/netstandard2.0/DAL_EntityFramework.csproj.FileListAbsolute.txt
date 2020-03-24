@@ -1,0 +1,8 @@
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EntityFramework\bin\Debug\netstandard2.0\DAL_EntityFramework.deps.json
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EntityFramework\bin\Debug\netstandard2.0\DAL_EntityFramework.dll
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EntityFramework\obj\Debug\netstandard2.0\DAL_EntityFramework.AssemblyInfoInputs.cache
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EntityFramework\obj\Debug\netstandard2.0\DAL_EntityFramework.AssemblyInfo.cs
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EntityFramework\obj\Debug\netstandard2.0\DAL_EntityFramework.csprojAssemblyReference.cache
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EntityFramework\bin\Debug\netstandard2.0\DAL_EntityFramework.pdb
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EntityFramework\obj\Debug\netstandard2.0\DAL_EntityFramework.dll
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EntityFramework\obj\Debug\netstandard2.0\DAL_EntityFramework.pdb

@@ -1,20 +1,20 @@
-﻿using System;
+﻿using BLL.DTOs;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using BLL.DTOs;
+using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
-    interface ISupplierService
+    public interface ISupplierService
     {
-        void Create(SupplierDTO supplier);
-        void Update(SupplierDTO supplier);
-        void Delete(int supplierId);
-
-        SupplierDTO GetById(int id);
-
-        IEnumerable<SupplierDTO> GetAll();
-        IEnumerable<SupplierDTO> GetSuppliersByCategory(string category);
-        IEnumerable<SupplierDTO> GetSuppliersWhereCategoryMax();
+        IEnumerable<SupplierDTO> GetSuppliers();
+        SupplierDTO GetSupplierById(int id);
+        void CreateSupplier(SupplierDTO supplierDTO);
+        void UpdateSupplier(SupplierDTO supplierDTO);
+        SupplierDTO GetSupplierByName(string supplierName);
+        void DeleteSupplier(int id);
+        void Dispose();
     }
 }

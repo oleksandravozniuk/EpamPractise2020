@@ -1,142 +1,83 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
 using BLL.Interfaces;
-using DAL_ADONET.Entities;
-using DAL_ADONET.Interfaces;
+using DAL_EF.Entities;
+using DAL_EF.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    class ProductService:IProductService
+    public class ProductService:IProductService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
+        IUnitOfWork Database { get; set; }
 
-        public ProductService(IUnitOfWork unitOfWork)
+        public ProductService(IUnitOfWork uow)
         {
-            if (unitOfWork != null)
-                this.unitOfWork = unitOfWork;
-
-            MapperConfiguration config = new MapperConfiguration(con =>
-            {
-                con.CreateMap<Product, ProductDTO>();
-                con.CreateMap<ProductDTO, Product>();
-            });
-
-            mapper = config.CreateMapper();
+            Database = uow;
         }
 
-        public void Create(ProductDTO product)
+        public IEnumerable<ProductDTO> GetProducts()
         {
-            if (product == null)
-                throw new ValidationException("Cannot create the nullable instance of Product");
-
-            try
-            {
-                Product newProduct = mapper.Map<Product>(product);
-                unitOfWork.Product.Add(newProduct);
-                unitOfWork.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot create an instance of Product", ex);
-            }
+            // применяем автомаппер для проекции одной коллекции на другую
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
+            return mapper.Map<IEnumerable<Product>, List<ProductDTO>>(Database.Products.GetAll().ToList());
         }
 
-        public void Update(ProductDTO product)
+        public void CreateProduct(ProductDTO productDTO)
         {
-            try
-            {
-                Product newProduct = mapper.Map<Product>(product);
-                unitOfWork.Product.Update(newProduct);
-                unitOfWork.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot update an instance of Product", ex);
-            }
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
+            Product newProduct = mapper.Map<Product>(productDTO);
+            Database.Products.Create(newProduct);
+            Database.Save();
+        }
+        public void UpdateProduct(ProductDTO productDTO)
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
+            Product newProduct = mapper.Map<Product>(productDTO);
+            Database.Products.Update(newProduct);
+            Database.Save();
         }
 
-        public void Delete(int product)
+        public void DeleteProduct(int id)
         {
-            try
-            {
-                unitOfWork.Product.Delete(product);
-                unitOfWork.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot delete an instance of Product", ex);
-            }
+            Database.Products.Delete(id);
+            Database.Save();
         }
 
-        public ProductDTO GetById(int id)
+        public ProductDTO GetProductById(int productId)
         {
-            ProductDTO productDTO;
-            try
-            {
-                productDTO = mapper.Map<ProductDTO>(unitOfWork.Product.GetById(id));
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot get an instance of Product", ex);
-            }
-
-            return productDTO;
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
+            return mapper.Map<Product, ProductDTO>(Database.Products.Get(p => p.ProductId == productId).First());
         }
 
-        public IEnumerable<ProductDTO> GetAll()
+        public ProductDTO GetProductByName(string productName)
         {
-            IEnumerable<ProductDTO> productDTOs;
-            try
-            {
-                productDTOs = mapper.Map<IEnumerable<ProductDTO>>(unitOfWork.Product.GetAll());
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot get an instances of Product", ex);
-            }
-
-            return productDTOs;
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
+            return mapper.Map<Product, ProductDTO>(Database.Products.Get(p => p.ProductName == productName).First());
         }
 
-        public IEnumerable<ProductDTO> GetProductsFromCategory(string category)
+        public IEnumerable<ProductDTO> GetProductsByCategory(int categoryId)
         {
-            try
-            {
-                var result = mapper.Map<IEnumerable<ProductDTO>>(
-                 unitOfWork.Product.GetAll().Where(x => x.Category.CategoryName == category).ToList());
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot get all an instances of Product", ex);
-            }
+            // применяем автомаппер для проекции одной коллекции на другую
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
+            return mapper.Map<IEnumerable<Product>, List<ProductDTO>>(Database.Products.Get(p => p.Category.CategoryId == categoryId));
         }
 
-        public IEnumerable<ProductDTO> GetProductsFromSupplier(string supplier)
+        public IEnumerable<ProductDTO> GetProductsBySupplier(int supplierId)
         {
-            try
-            {
-                var result = mapper.Map<IEnumerable<ProductDTO>>(
-                unitOfWork.Product.GetAll().Where(x => x.Supplier.SupplierName == supplier).ToList());
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot get all an instances of Product", ex);
-            }
+            // применяем автомаппер для проекции одной коллекции на другую
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
+            return mapper.Map<IEnumerable<Product>, List<ProductDTO>>(Database.Products.Get(p => p.Supplier.SupplierId == supplierId));
         }
 
-      
 
         public void Dispose()
         {
-            unitOfWork.Dispose();
+            Database.Dispose();
         }
     }
 }

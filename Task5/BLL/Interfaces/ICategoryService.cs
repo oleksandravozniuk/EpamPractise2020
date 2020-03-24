@@ -1,18 +1,20 @@
 ﻿using BLL.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
-    interface ICategoryService
+    public interface ICategoryService
     {
-        void Create(CategoryDTO categoryProduct);
-        void Update(CategoryDTO categoryProduct);
-        void Delete(int categoryId);
-
-        CategoryDTO GetById(int id);
-
-        IEnumerable<CategoryDTO> GetAll();
+        IEnumerable<CategoryDTO> GetCategories();
+        CategoryDTO GetCategoryById(int id);
+        void CreateCategory(CategoryDTO categoryDTO);
+        void UpdateCategory(CategoryDTO categoryDTO);
+        CategoryDTO GetCategoryByName(string categoryName);
+        void DeleteCategory(int id);
+        void Dispose();
     }
 }

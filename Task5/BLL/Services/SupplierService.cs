@@ -1,149 +1,69 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
-using BLL.Infrastructure;
 using BLL.Interfaces;
-using DAL_ADONET.Entities;
-using DAL_ADONET.Interfaces;
+using DAL_EF.Entities;
+using DAL_EF.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    class SupplierService:ISupplierService
+    public class SupplierService:ISupplierService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
+        IUnitOfWork Database { get; set; }
 
-        public SupplierService(IUnitOfWork unitOfWork)
+        public SupplierService(IUnitOfWork uow)
         {
-            if (unitOfWork != null)
-                this.unitOfWork = unitOfWork;
-
-            MapperConfiguration config = new MapperConfiguration(con =>
-            {
-                con.CreateMap<SupplierDTO, Supplier>();
-                con.CreateMap<Supplier, SupplierDTO>();
-
-                con.CreateMap<ProductDTO, Product>();
-                con.CreateMap<Product, ProductDTO>();
-            }
-            );
-
-            mapper = config.CreateMapper();
+            Database = uow;
         }
 
-        public void Create(SupplierDTO supplier)
+        public IEnumerable<SupplierDTO> GetSuppliers()
         {
-            if (supplier == null)
-                throw new ValidationException("Cannot create the nullable instance of Supplier");
-
-            try
-            {
-                Supplier newSupplier = mapper.Map<Supplier>(supplier);
-                unitOfWork.Supplier.Add(newSupplier);
-                unitOfWork.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot create an instance of Supplier", ex);
-            }
+            // применяем автомаппер для проекции одной коллекции на другую
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Supplier, SupplierDTO>()).CreateMapper();
+            return mapper.Map<IEnumerable<Supplier>, List<SupplierDTO>>(Database.Suppliers.GetAll());
         }
 
-        public void Update(SupplierDTO supplier)
+        public SupplierDTO GetSupplierById(int id)
         {
-            try
-            {
-                Supplier newSupplier = mapper.Map<Supplier>(supplier);
-                unitOfWork.Supplier.Update(newSupplier);
-                unitOfWork.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot update an instance of Supplier", ex);
-            }
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Supplier, SupplierDTO>()).CreateMapper();
+            return mapper.Map<Supplier, SupplierDTO>(Database.Suppliers.Get(p => p.SupplierId == id).First());
         }
 
-        public void Delete(int supplierId)
+        public void CreateSupplier(SupplierDTO supplierDTO)
         {
-            try
-            {
-                unitOfWork.Supplier.Delete(supplierId);
-                unitOfWork.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot delete an instance of Supplier", ex);
-            }
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Supplier, SupplierDTO>()).CreateMapper();
+            Supplier newSupplier = mapper.Map<Supplier>(supplierDTO);
+            Database.Suppliers.Create(newSupplier);
+            Database.Save();
+        }
+        public void UpdateSupplier(SupplierDTO supplierDTO)
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Supplier, SupplierDTO>()).CreateMapper();
+            Supplier newSupplier = mapper.Map<Supplier>(supplierDTO);
+            Database.Suppliers.Update(newSupplier);
+            Database.Save();
         }
 
-        public SupplierDTO GetById(int id)
+        public void DeleteSupplier(int id)
         {
-            SupplierDTO supplierDTO;
-            try
-            {
-                supplierDTO = mapper.Map<SupplierDTO>(unitOfWork.Supplier.GetById(id));
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot get an instance of Supplier", ex);
-            }
-
-            return supplierDTO;
+            Database.Suppliers.Delete(id);
+            Database.Save();
         }
 
-        public IEnumerable<SupplierDTO> GetAll()
+        public SupplierDTO GetSupplierByName(string supplierName)
         {
-            IEnumerable<SupplierDTO> supplierDTOs;
-            try
-            {
-                supplierDTOs = mapper.Map<IEnumerable<SupplierDTO>>(unitOfWork.Supplier.GetAll());
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot get an instances of Supplier", ex);
-            }
-
-            return supplierDTOs;
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Supplier, SupplierDTO>()).CreateMapper();
+            return mapper.Map<Supplier, SupplierDTO>(Database.Suppliers.Get(p => p.SupplierName == supplierName).First());
         }
 
-        public IEnumerable<SupplierDTO> GetSuppliersByCategory(string category)
+        public void Dispose()
         {
-            try
-            {
-                var products = mapper.Map<IEnumerable<ProductDTO>>(
-                 unitOfWork.Product.GetAll().Where(x => x.Category.CategoryName == category).ToList()
-             );
-                var suppliers = products.Select(x => x.Supplier).Distinct().ToList();
-                return suppliers;
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot get all an instances of Supplier", ex);
-            }
+            Database.Dispose();
         }
 
-        public IEnumerable<SupplierDTO> GetSuppliersWhereCategoryMax()
-        {
-            try
-            {
-                var tableRes = unitOfWork.Product.GetAll().
-                    Select(x => new { Supp = x.Supplier.SupplierId, Cat = x.Category.CategoryId }).Distinct().
-                    GroupBy(x => x.Supp).
-                    Select(g => new { Sup = g.Key, Count = g.Count() });
-
-                var maxRes = tableRes.Max(x => x.Count);
-
-                var supRes = tableRes.Where(x => x.Count == maxRes).Select(x => x.Sup);
-
-                return mapper.Map<IEnumerable<Supplier>, IEnumerable<SupplierDTO>>(
-                    unitOfWork.Supplier.GetAll().Where(x => supRes.Contains(x.SupplierId)));
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot get all an instances of Supplier", ex);
-            }
-        }
     }
 }

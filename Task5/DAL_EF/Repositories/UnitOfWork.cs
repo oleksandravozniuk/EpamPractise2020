@@ -1,13 +1,15 @@
-﻿using DAL_EF.EF;
+﻿using DAL_EF.Context;
 using DAL_EF.Entities;
 using DAL_EF.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DAL_EF.Repositories
 {
-    class UnitOfWork:IUnitOfWork
+    public class UnitOfWork:IUnitOfWork
     {
         private StoreContext db;
         private ProductRepository productRepository;
@@ -15,7 +17,7 @@ namespace DAL_EF.Repositories
         private SupplierRepository supplierRepository;
 
 
-        public EFUnitOfWork(string connectionString)
+        public UnitOfWork(string connectionString)
         {
             db = new StoreContext(connectionString);
         }
@@ -29,13 +31,23 @@ namespace DAL_EF.Repositories
             }
         }
 
-        public IRepository<Category> Categorys
+        public IRepository<Category> Categories
         {
             get
             {
                 if (categoryRepository == null)
                     categoryRepository = new CategoryRepository(db);
                 return categoryRepository;
+            }
+        }
+
+        public IRepository<Supplier> Suppliers
+        {
+            get
+            {
+                if (supplierRepository == null)
+                    supplierRepository = new SupplierRepository(db);
+                return supplierRepository;
             }
         }
 

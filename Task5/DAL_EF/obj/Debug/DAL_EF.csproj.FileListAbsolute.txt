@@ -1,0 +1,12 @@
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\bin\Debug\DAL_EF.dll.config
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\bin\Debug\DAL_EF.dll
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\bin\Debug\DAL_EF.pdb
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\bin\Debug\EntityFramework.dll
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\bin\Debug\System.ComponentModel.Annotations.dll
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\bin\Debug\EntityFramework.xml
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\obj\Debug\DAL_EF.csprojAssemblyReference.cache
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\obj\Debug\DAL_EF.csproj.CopyComplete
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\obj\Debug\DAL_EF.dll
+C:\Users\Oleksandra\Desktop\epam\Task5\DAL_EF\obj\Debug\DAL_EF.pdb

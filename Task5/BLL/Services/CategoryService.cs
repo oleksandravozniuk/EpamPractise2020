@@ -1,116 +1,68 @@
 ﻿using AutoMapper;
 using BLL.DTOs;
-using BLL.Infrastructure;
 using BLL.Interfaces;
-using DAL_ADONET.Entities;
-using DAL_ADONET.Interfaces;
+using DAL_EF.Entities;
+using DAL_EF.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    class CategoryService:ICategoryService
+    public class CategoryService:ICategoryService
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
+        IUnitOfWork Database { get; set; }
 
-        public CategoryService(IUnitOfWork unitOfWork)
+        public CategoryService(IUnitOfWork uow)
         {
-            if (unitOfWork != null)
-                this.unitOfWork = unitOfWork;
-
-            MapperConfiguration config = new MapperConfiguration(con =>
-            {
-                con.CreateMap<CategoryDTO, Product>();
-                con.CreateMap<Category, CategoryDTO>();
-
-                con.CreateMap<ProductDTO, Product>();
-                con.CreateMap<Product, ProductDTO>();
-            }
-            );
-
-            mapper = config.CreateMapper();
+            Database = uow;
         }
 
-        public void Create(CategoryDTO categoryProduct)
+        public IEnumerable<CategoryDTO> GetCategories()
         {
-            if (categoryProduct == null)
-                throw new ValidationException("Cannot create the nullable instance of CategoryProduct");
-
-            try
-            {
-                Category newCategory = mapper.Map<Category>(categoryProduct);
-                unitOfWork.Category.Add(newCategory);
-                unitOfWork.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot create an instance of CategoryProduct", ex);
-            }
+            // применяем автомаппер для проекции одной коллекции на другую
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Category, CategoryDTO>()).CreateMapper();
+            return mapper.Map<IEnumerable<Category>, List<CategoryDTO>>(Database.Categories.GetAll().ToList());
         }
 
-        public void Update(CategoryDTO categoryProduct)
+        public CategoryDTO GetCategoryById(int id)
         {
-            try
-            {
-                Category newCategory = mapper.Map<Category>(categoryProduct);
-                unitOfWork.Category.Update(newCategory);
-                unitOfWork.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot update an instance of CategoryProduct", ex);
-            }
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Category, CategoryDTO>()).CreateMapper();
+            return mapper.Map<Category, CategoryDTO>(Database.Categories.Get(p => p.CategoryId == id).First());
         }
 
-        public void Delete(int categoryProductId)
+        public void CreateCategory(CategoryDTO categoryDTO)
         {
-            try
-            {
-                unitOfWork.Category.Delete(categoryProductId);
-                unitOfWork.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot delete an instance of CategoryProduct", ex);
-            }
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, Category>()).CreateMapper();
+            Category newCategory = mapper.Map<Category>(categoryDTO);
+            Database.Categories.Create(newCategory);
+            Database.Save();
+        }
+        public void UpdateCategory(CategoryDTO categoryDTO)
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Category, CategoryDTO>()).CreateMapper();
+            Category newCategory = mapper.Map<Category>(categoryDTO);
+            Database.Categories.Update(newCategory);
+            Database.Save();
         }
 
-        public CategoryDTO GetById(int id)
+        public void DeleteCategory(int id)
         {
-            CategoryDTO categoryProductDTO;
-            try
-            {
-                categoryProductDTO = mapper.Map<CategoryDTO>(unitOfWork.Category.GetById(id));
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot get an instance of CategoryProduct", ex);
-            }
-
-            return categoryProductDTO;
+            Database.Categories.Delete(id);
+            Database.Save();
         }
 
-        public IEnumerable<CategoryDTO> GetAll()
+        public CategoryDTO GetCategoryByName(string categoryName)
         {
-            IEnumerable<CategoryDTO> categoryProductDTOs;
-            try
-            {
-                categoryProductDTOs = mapper.Map<IEnumerable<CategoryDTO>>(unitOfWork.Category.GetAll());
-            }
-            catch (Exception ex)
-            {
-                throw new ValidationException("Cannot get an instances of CategoryProduct", ex);
-            }
-
-            return categoryProductDTOs;
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Category, CategoryDTO>()).CreateMapper();
+            return mapper.Map<Category, CategoryDTO>(Database.Categories.Get(p => p.CategoryName == categoryName).First());
         }
-
 
         public void Dispose()
         {
-            unitOfWork.Dispose();
+            Database.Dispose();
         }
     }
 }

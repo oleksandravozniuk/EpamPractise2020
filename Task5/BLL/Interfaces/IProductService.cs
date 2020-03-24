@@ -1,20 +1,22 @@
 ﻿using BLL.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
-    interface IProductService
+    public interface IProductService
     {
-        void Create(ProductDTO product);
-        void Update(ProductDTO product);
-        void Delete(int productId);
-
-        ProductDTO GetById(int id);
-
-        IEnumerable<ProductDTO> GetAll();
-        IEnumerable<ProductDTO> GetProductsFromCategory(string category);
-        IEnumerable<ProductDTO> GetProductsFromSupplier(string supplier);
+        IEnumerable<ProductDTO> GetProducts();
+        ProductDTO GetProductById(int id);
+        void CreateProduct(ProductDTO productDTO);
+        void UpdateProduct(ProductDTO productDTO);
+        ProductDTO GetProductByName(string productName);
+        IEnumerable<ProductDTO> GetProductsByCategory(int categoryId);
+        IEnumerable<ProductDTO> GetProductsBySupplier(int supplierId);
+        void DeleteProduct(int id);
+        void Dispose();
     }
 }

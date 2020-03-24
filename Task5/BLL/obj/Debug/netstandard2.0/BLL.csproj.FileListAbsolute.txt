@@ -1,4 +1,0 @@
-C:\Users\Oleksandra\Desktop\epam\Task5\BLL\bin\Debug\netstandard2.0\DAL_ADONET.dll
-C:\Users\Oleksandra\Desktop\epam\Task5\BLL\obj\Debug\netstandard2.0\BLL.csprojAssemblyReference.cache
-C:\Users\Oleksandra\Desktop\epam\Task5\BLL\obj\Debug\netstandard2.0\BLL.AssemblyInfoInputs.cache
-C:\Users\Oleksandra\Desktop\epam\Task5\BLL\obj\Debug\netstandard2.0\BLL.AssemblyInfo.cs
