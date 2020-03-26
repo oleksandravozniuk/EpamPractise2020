@@ -16,16 +16,14 @@ namespace DAL_EF.Entities
         [MaxLength(20)]
         public string ProductName { get; set; }
 
-        public int SupplierId { get; set; }
+        public int Price { get; set; }
 
-        public int CategoryId { get; set; }
+        public int? SupplierId { get; set; }
 
-        [Required]
-        [MaxLength(20)]
-        public Supplier Supplier { get; set; }
+        public int? CategoryId { get; set; }
 
-        [Required]
-        [MaxLength(20)]
-        public Category Category { get; set; }
+        public virtual Supplier Supplier { get; set; }
+        public virtual Category Category { get; set; }
+
     }
 }

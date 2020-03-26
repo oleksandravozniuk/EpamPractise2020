@@ -14,8 +14,9 @@ namespace BLL.Interfaces
         void CreateProduct(ProductDTO productDTO);
         void UpdateProduct(ProductDTO productDTO);
         ProductDTO GetProductByName(string productName);
-        IEnumerable<ProductDTO> GetProductsByCategory(int categoryId);
-        IEnumerable<ProductDTO> GetProductsBySupplier(int supplierId);
+        IEnumerable<ProductDTO> GetProductsByCategory(string category);
+        IEnumerable<ProductDTO> GetProductsBySupplier(string supplier);
+        IEnumerable<ProductDTO> GetProductsByFixedPrice(int price);
         void DeleteProduct(int id);
         void Dispose();
     }

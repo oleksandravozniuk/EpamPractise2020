@@ -14,30 +14,61 @@ namespace BLL.Services
     public class ProductService:IProductService
     {
         IUnitOfWork Database { get; set; }
+        private readonly IMapper productMapper;
+        private readonly IMapper categoryMapper;
+        private readonly IMapper supplierMapper;
+
 
         public ProductService(IUnitOfWork uow)
         {
-            Database = uow;
+                if (uow != null)
+                    this.Database = uow;
+
+            MapperConfiguration configCategory = new MapperConfiguration(con => 
+            {
+                con.CreateMap<Category, CategoryDTO>();
+                con.CreateMap<CategoryDTO, Category>();
+            });
+            categoryMapper = configCategory.CreateMapper();
+
+            MapperConfiguration configSupplier = new MapperConfiguration(con =>
+            {
+                con.CreateMap<Supplier, SupplierDTO>();
+                con.CreateMap<SupplierDTO, Supplier>();
+            });
+            supplierMapper = configSupplier.CreateMapper();
+
+            MapperConfiguration configProduct = new MapperConfiguration(con =>
+            {
+                con.CreateMap<ProductDTO, Product>()
+               .ForMember(dest => dest.Category, opt => opt.MapFrom(src => categoryMapper.Map<CategoryDTO, Category>(src.Category)))
+               .ForMember(dest => dest.Supplier, opt => opt.MapFrom(src => supplierMapper.Map<SupplierDTO, Supplier>(src.Supplier)));
+
+                con.CreateMap<Product, ProductDTO>()
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => categoryMapper.Map<Category, CategoryDTO>(src.Category)))
+                .ForMember(dest => dest.Supplier, opt => opt.MapFrom(src => supplierMapper.Map<Supplier, SupplierDTO>(src.Supplier)));
+            });
+
+            productMapper = configProduct.CreateMapper();
+
+
         }
 
         public IEnumerable<ProductDTO> GetProducts()
         {
-            // применяем автомаппер для проекции одной коллекции на другую
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Product>, List<ProductDTO>>(Database.Products.GetAll().ToList());
+            return productMapper.Map<IEnumerable<Product>, List<ProductDTO>>(Database.Products.GetAll());  
         }
 
         public void CreateProduct(ProductDTO productDTO)
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
-            Product newProduct = mapper.Map<Product>(productDTO);
+            
+            Product newProduct = productMapper.Map<Product>(productDTO);
             Database.Products.Create(newProduct);
             Database.Save();
         }
         public void UpdateProduct(ProductDTO productDTO)
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
-            Product newProduct = mapper.Map<Product>(productDTO);
+            Product newProduct = productMapper.Map<Product>(productDTO);
             Database.Products.Update(newProduct);
             Database.Save();
         }
@@ -50,29 +81,35 @@ namespace BLL.Services
 
         public ProductDTO GetProductById(int productId)
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
-            return mapper.Map<Product, ProductDTO>(Database.Products.Get(p => p.ProductId == productId).First());
+            return productMapper.Map<Product, ProductDTO>(Database.Products.Get(p => p.ProductId == productId).First());
         }
 
         public ProductDTO GetProductByName(string productName)
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
-            return mapper.Map<Product, ProductDTO>(Database.Products.Get(p => p.ProductName == productName).First());
+            return productMapper.Map<Product, ProductDTO>(Database.Products.Get(p => p.ProductName == productName).First());
         }
 
-        public IEnumerable<ProductDTO> GetProductsByCategory(int categoryId)
+        public IEnumerable<ProductDTO> GetProductsByCategory(string category)
         {
             // применяем автомаппер для проекции одной коллекции на другую
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Product>, List<ProductDTO>>(Database.Products.Get(p => p.Category.CategoryId == categoryId));
+           
+            return productMapper.Map<IEnumerable<Product>, List<ProductDTO>>(Database.Products.Get(p => p.Category.CategoryName == category).ToList());
         }
 
-        public IEnumerable<ProductDTO> GetProductsBySupplier(int supplierId)
+        public IEnumerable<ProductDTO> GetProductsBySupplier(string supplier)
         {
             // применяем автомаппер для проекции одной коллекции на другую
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Product, ProductDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Product>, List<ProductDTO>>(Database.Products.Get(p => p.Supplier.SupplierId == supplierId));
+
+            return productMapper.Map<IEnumerable<Product>, List<ProductDTO>>(Database.Products.Get(p => p.Supplier.SupplierName == supplier).ToList());
         }
+
+        public IEnumerable<ProductDTO> GetProductsByFixedPrice(int price)
+        {
+
+            var products = productMapper.Map<IEnumerable<ProductDTO>>(Database.Products.Get(x => x.Price == price).ToList());
+            return products;
+        }
+
 
 
         public void Dispose()

@@ -1,8 +1,10 @@
 ﻿using DAL_EF.Context;
 using DAL_EF.Entities;
 using DAL_EF.Interfaces;
+using IdentityModel.Client;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,7 +57,20 @@ namespace DAL_EF.Repositories
 
         public void Save()
         {
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+                    {
+                        Console.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                    }
+                }
+            }
         }
 
         private bool disposed = false;

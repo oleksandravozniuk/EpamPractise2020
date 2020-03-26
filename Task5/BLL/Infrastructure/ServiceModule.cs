@@ -1,4 +1,6 @@
-﻿using DAL_EF.Interfaces;
+﻿using BLL.Interfaces;
+using BLL.Services;
+using DAL_EF.Interfaces;
 using DAL_EF.Repositories;
 using Ninject.Modules;
 using System;
@@ -19,6 +21,7 @@ namespace BLL.Infrastructure
         public override void Load()
         {
             Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument(connectionString);
+
         }
 
     }

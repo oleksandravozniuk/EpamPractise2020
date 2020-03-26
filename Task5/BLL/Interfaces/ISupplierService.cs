@@ -10,11 +10,14 @@ namespace BLL.Interfaces
     public interface ISupplierService
     {
         IEnumerable<SupplierDTO> GetSuppliers();
-        SupplierDTO GetSupplierById(int id);
+        SupplierDTO GetSupplierById(int? id);
         void CreateSupplier(SupplierDTO supplierDTO);
         void UpdateSupplier(SupplierDTO supplierDTO);
         SupplierDTO GetSupplierByName(string supplierName);
+        IEnumerable<SupplierDTO> GetSuppliersByCategory(string categoryName);
+        IEnumerable<SupplierDTO> GetSuppliersByMaxCategory();
         void DeleteSupplier(int id);
         void Dispose();
+ 
     }
 }

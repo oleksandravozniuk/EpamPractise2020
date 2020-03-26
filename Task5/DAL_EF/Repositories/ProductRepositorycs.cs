@@ -21,7 +21,7 @@ namespace DAL_EF.Repositories
 
         public IEnumerable<Product> GetAll()
         {
-            return db.Products;
+            return db.Products.Include(c=>c.Category).Include(s=>s.Supplier);
         }
 
         public void Create(Product product)
@@ -35,7 +35,7 @@ namespace DAL_EF.Repositories
         }
         public IEnumerable<Product> Get(Func<Product, Boolean> predicate)
         {
-            return db.Products.Include(c=>c.Category).Include(s=>s.Supplier).Where(predicate);
+            return db.Products.Where(predicate);
         }
         public void Delete(int id)
         {

@@ -14,36 +14,44 @@ namespace BLL.Services
     public class SupplierService:ISupplierService
     {
         IUnitOfWork Database { get; set; }
+       
+
+        private readonly IMapper supplierMapper;
 
         public SupplierService(IUnitOfWork uow)
         {
-            Database = uow;
+            if (uow != null)
+                this.Database = uow;
+
+
+            MapperConfiguration configSupplier = new MapperConfiguration(con =>
+            {
+                con.CreateMap<Supplier, SupplierDTO>();
+                con.CreateMap<SupplierDTO, Supplier>();
+            });
+            supplierMapper = configSupplier.CreateMapper();
+
         }
 
         public IEnumerable<SupplierDTO> GetSuppliers()
         {
-            // применяем автомаппер для проекции одной коллекции на другую
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Supplier, SupplierDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Supplier>, List<SupplierDTO>>(Database.Suppliers.GetAll());
+            return supplierMapper.Map<IEnumerable<Supplier>, List<SupplierDTO>>(Database.Suppliers.GetAll().ToList());
         }
 
-        public SupplierDTO GetSupplierById(int id)
+        public SupplierDTO GetSupplierById(int? id)
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Supplier, SupplierDTO>()).CreateMapper();
-            return mapper.Map<Supplier, SupplierDTO>(Database.Suppliers.Get(p => p.SupplierId == id).First());
+            return supplierMapper.Map<Supplier, SupplierDTO>(Database.Suppliers.Get(p => p.SupplierId == id).First());
         }
 
         public void CreateSupplier(SupplierDTO supplierDTO)
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Supplier, SupplierDTO>()).CreateMapper();
-            Supplier newSupplier = mapper.Map<Supplier>(supplierDTO);
+            Supplier newSupplier = supplierMapper.Map<Supplier>(supplierDTO);
             Database.Suppliers.Create(newSupplier);
             Database.Save();
         }
         public void UpdateSupplier(SupplierDTO supplierDTO)
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Supplier, SupplierDTO>()).CreateMapper();
-            Supplier newSupplier = mapper.Map<Supplier>(supplierDTO);
+            Supplier newSupplier = supplierMapper.Map<Supplier>(supplierDTO);
             Database.Suppliers.Update(newSupplier);
             Database.Save();
         }
@@ -56,10 +64,34 @@ namespace BLL.Services
 
         public SupplierDTO GetSupplierByName(string supplierName)
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Supplier, SupplierDTO>()).CreateMapper();
-            return mapper.Map<Supplier, SupplierDTO>(Database.Suppliers.Get(p => p.SupplierName == supplierName).First());
+            return supplierMapper.Map<Supplier, SupplierDTO>(Database.Suppliers.Get(p => p.SupplierName == supplierName).First());
+        }
+        public IEnumerable<SupplierDTO> GetSuppliersByCategory(string categoryName)
+        {
+
+            var products = Database.Products.GetAll().Where(p => p.Category.CategoryName == categoryName);
+            
+            var suppliers = products.Select(s => s.Supplier);
+
+            return supplierMapper.Map<IEnumerable<Supplier>, List<SupplierDTO>>(suppliers.ToList());
         }
 
+        public IEnumerable<SupplierDTO> GetSuppliersByMaxCategory()
+        {
+            List<SupplierDTO> suppliers = new List<SupplierDTO>();
+
+            var group = Database.Products.GetAll().GroupBy(p => p.Category)
+                        .Select(g => new
+                        {
+                            Name = g.Key.CategoryName,
+                            Count = g.Count(),
+                            Suppliers = g.Select(p => p.Supplier).Distinct()
+                        }).OrderByDescending(g=>g.Count).First();
+            
+                foreach (SupplierDTO supplier in supplierMapper.Map<IEnumerable<Supplier>,List<SupplierDTO>>(group.Suppliers))
+                    suppliers.Add(supplier);
+            return suppliers;
+        }
         public void Dispose()
         {
             Database.Dispose();

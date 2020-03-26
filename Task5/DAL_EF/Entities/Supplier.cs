@@ -15,5 +15,7 @@ namespace DAL_EF.Entities
         [Required]
         [MaxLength(20)]
         public string SupplierName { get; set; }
+
+
     }
 }

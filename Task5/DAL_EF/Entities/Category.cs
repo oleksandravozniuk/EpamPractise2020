@@ -14,5 +14,6 @@ namespace DAL_EF.Entities
         [Required]
         [MaxLength(20)]
         public string CategoryName { get; set; }
+
     }
 }
