@@ -1,0 +1,16 @@
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\BLL.dll
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\BLL.pdb
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\AutoMapper.dll
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\DAL.dll
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\Ninject.dll
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\EntityFramework.dll
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\DAL.pdb
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\DAL.dll.config
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\AutoMapper.pdb
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\AutoMapper.xml
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\Ninject.xml
+C:\Users\Oleksandra\Desktop\WebApi\BLL\bin\Debug\EntityFramework.xml
+C:\Users\Oleksandra\Desktop\WebApi\BLL\obj\Debug\BLL.csprojAssemblyReference.cache
+C:\Users\Oleksandra\Desktop\WebApi\BLL\obj\Debug\BLL.csproj.CopyComplete
+C:\Users\Oleksandra\Desktop\WebApi\BLL\obj\Debug\BLL.dll
+C:\Users\Oleksandra\Desktop\WebApi\BLL\obj\Debug\BLL.pdb

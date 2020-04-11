@@ -1,0 +1,11 @@
+C:\Users\Oleksandra\Desktop\WebApi\DAL\bin\Debug\DAL.dll.config
+C:\Users\Oleksandra\Desktop\WebApi\DAL\bin\Debug\DAL.dll
+C:\Users\Oleksandra\Desktop\WebApi\DAL\bin\Debug\DAL.pdb
+C:\Users\Oleksandra\Desktop\WebApi\DAL\bin\Debug\EntityFramework.dll
+C:\Users\Oleksandra\Desktop\WebApi\DAL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Oleksandra\Desktop\WebApi\DAL\bin\Debug\EntityFramework.xml
+C:\Users\Oleksandra\Desktop\WebApi\DAL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Oleksandra\Desktop\WebApi\DAL\obj\Debug\DAL.csproj.CopyComplete
+C:\Users\Oleksandra\Desktop\WebApi\DAL\obj\Debug\DAL.dll
+C:\Users\Oleksandra\Desktop\WebApi\DAL\obj\Debug\DAL.pdb
+C:\Users\Oleksandra\Desktop\WebApi\DAL\obj\Debug\DAL.csprojAssemblyReference.cache
